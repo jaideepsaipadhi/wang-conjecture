@@ -1,0 +1,482 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem,mathtools}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\e}{\mathrm e}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}
+\newcommand{\sgn}{\operatorname{sgn}}\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\cA}{\mathcal A}\newcommand{\cK}{\mathcal K}\newcommand{\Gz}{\Gamma_0}
+\DeclareMathOperator{\Rea}{Re}
+\title[Sign periodicity for powers of the infinite Borwein product]{Sign periodicity for integer powers of the infinite Borwein product: a proof of Wang's conjecture}
+\author{Jaideep Sai Padhi}
+\address{Department of Computer Science, Purdue University, West Lafayette, IN, USA}
+\email{jpadhi@purdue.edu}
+\begin{document}
+\begin{abstract}
+For integers $t\ge2$ and $m\ge1$ let $c_t^{(m)}(n)$ denote the coefficients of $(q;q)_\infty^m/(q^t;q^t)_\infty^m$. L.~Wang conjectured that the sign of $c_t^{(m)}(n)$ is eventually periodic in $n$, with least period divisible by $t$. He proved this when $m(t-1)\le24$, for $t=2$, and for prime $t$ with $m\in\{1,3\}$. We prove the conjecture in general.
+
+The argument has four parts:
+\begin{itemize}[leftmargin=1.5em]
+\item a Fourier argument on $\Z/t\Z$, which shows that any eventual period is divisible by $t$;
+\item a uniqueness principle for Rademacher--Zuckerman expansions, which lets us work with groups of terms of equal exponential growth rather than with individual terms;
+\item a Galois scaling law for these groups, obtained from an explicit Chinese-remainder factorisation of the amplitudes: scaling a modulus by a prime multiplies a group amplitude by a nonzero Kloosterman sum and applies a Galois automorphism;
+\item a finiteness argument showing that on every residue class the sign is decided by one of finitely many ``rigid'' groups.
+\end{itemize}
+For prime $t$ we also give a direct proof through Kloosterman and Sali\'e sums of prime-power modulus, and we determine the sign pattern explicitly when $m$ is even.
+\end{abstract}
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+\subsection{The conjecture}
+For integers $t\ge2$ and $m\ge1$ write
+\begin{equation}\label{eq:def}
+G_t(q)^m=\frac{(q;q)_\infty^m}{(q^t;q^t)_\infty^m}=\sum_{n\ge0}c(n)q^n,\qquad c(n)=c_t^{(m)}(n)\in\Z,
+\end{equation}
+where $(q;q)_\infty=\prod_{j\ge1}(1-q^j)$. Andrews~\cite{A} proved that $c_p^{(1)}(n)c_p^{(1)}(n+p)\ge0$ for primes $p$. Schlosser and Zhou~\cite{SZ} studied real powers of $G_p$. Wang~\cite{W} proved that $\sgn c(n)$ is eventually periodic whenever $m(t-1)\le24$, and determined the sign patterns in that range. Beyond this range he stated the following.
+
+\begin{definition}
+A real sequence $(a(n))$ is \emph{ultimately periodic in sign} (UPS) if there is $L\ge1$ with $\sgn a(n+L)=\sgn a(n)$ for all sufficiently large $n$. The least such $L$ is the \emph{least period of sign}.
+\end{definition}
+
+\noindent\textbf{Conjecture (Wang \cite[Conj.~1.6]{W}).} For all positive integers $t$ and $m$, the sequence $(c_t^{(m)}(n))_{n\ge0}$ is UPS, and its least period of sign is divisible by $t$.
+
+Wang proved the conjecture for $m(t-1)\le24$, for $t=2$ and all $m$, and for prime $t$ with $m\in\{1,3\}$.
+
+\begin{theorem}\label{thm:main}
+Wang's conjecture holds for all integers $t\ge2$ and $m\ge1$.
+\end{theorem}
+
+For prime level there is a more explicit statement. Let
+\[
+\alpha(r)=\sum_{\substack{h\bmod t\\ \gcd(h,t)=1}}e^{-\pi i m\,s(h,t)}\,e\Big(-\frac{hr}t\Big),
+\]
+where $s(h,t)$ is the Dedekind sum and $e(x)=\e^{2\pi ix}$. This is Wang's leading amplitude \cite[(1.21)]{W}.
+
+\begin{theorem}\label{thm:prime}
+Let $t=p$ be prime.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item If $p\ge5$ and $m$ is even, or if $p=3$ and $m\not\equiv3\pmod6$, then $\alpha(r)\ne0$ for every residue $r$. Consequently $\sgn c(n)=\sgn\alpha(n\bmod p)$ for all large $n$, and the least period of sign is exactly $p$.
+\item If $p\ge5$ and $m$ is odd, then $\alpha(r)=0$ exactly when $\chi_p\big((\mu-r)\mu\big)=-1$, or when $r\equiv\mu\equiv0\pmod p$. Here $\chi_p$ is the Legendre symbol and $\mu\equiv-m\overline{24}\pmod p$. On each such class the sign is eventually constant (possibly $0$).
+\end{enumerate}
+\end{theorem}
+
+\subsection{Strategy}
+Put $\mu=m(t-1)/24$ and $F(\tau)=\eta(\tau)^m/\eta(t\tau)^m=q^{-\mu}\sum c(n)q^n$. This is a modular function of weight $0$ on $\Gz(t)$ with a multiplier of finite order. The Rademacher--Zuckerman exact formula expresses $c(n)$ as an absolutely convergent series of terms
+\[
+A_T(n)\,B_T(n).
+\]
+The amplitude $A_T$ is a generalized Kloosterman sum, periodic in $n$. The Bessel factor $B_T$ grows like $\exp\big(4\pi\beta_T\sqrt n\big)$ for a \emph{growth rate} $\beta_T>0$.
+
+On a residue class, the sign of $c(n)$ is decided by the fastest-growing term that does not vanish. There are two difficulties:
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item terms of different cusp types can have exactly the same growth rate and cancel;
+\item infinitely many terms exist, so a priori the deciding term could have an unbounded denominator, which would destroy periodicity.
+\end{enumerate}
+We handle (i) by working with groups of terms of equal growth rate, whose amplitudes are canonical by a uniqueness principle (Lemma~\ref{lem:unique}). We handle (ii) with a Galois scaling law for groups (Proposition~\ref{prop:scaling}): a non-rigid group can be nonzero only where a faster rigid group is nonzero. This is combined with a finiteness argument (Section~\ref{sec:finite}). Divisibility of the period by $t$ follows from a Fourier argument (Section~\ref{sec:period}).
+
+\subsection*{Notation}
+\begin{itemize}[leftmargin=1.5em]
+\item $e(x)=\e^{2\pi ix}$.
+\item $\bar a$ denotes an inverse of $a$ modulo a modulus that will be clear from context.
+\item $\chi_p$ is the Legendre symbol, and $(\tfrac\cdot\cdot)$ is the Jacobi or Kronecker symbol.
+\item For a set of primes $S$, an $S$-unit is a rational number whose numerator and denominator have all their prime factors in $S$.
+\end{itemize}
+
+\section{Exact formulas and the uniqueness principle}\label{sec:exact}
+\subsection{Two modular realisations}
+Let $F(\tau)=\eta(\tau)^m\eta(t\tau)^{-m}$ and $N=576t$.
+
+\begin{lemma}\label{lem:ghn}
+$F^\ast(\tau):=F(24\tau)=\eta(24\tau)^m\eta(24t\tau)^{-m}$ is a weakly holomorphic modular function on $\Gz(N)$ with the real character $\chi(d)=\big(\tfrac{t^{-m}}{d}\big)$. Moreover
+\[
+F^\ast(\tau)=\sum_{n\ge0}c(n)\,q^{\,24n-m(t-1)} .
+\]
+\end{lemma}
+\begin{proof}
+The exponents are $r_{24}=m$ and $r_{24t}=-m$. We have $\sum_\delta\delta r_\delta=24m(1-t)\equiv0\pmod{24}$ and $\sum_\delta (N/\delta)r_\delta=24tm-24m\equiv0\pmod{24}$. The weight is $\frac12\sum r_\delta=0$. By the Gordon--Hughes--Newman theorem \cite[Thm.~1.64]{O}, $F^\ast$ is modular on $\Gz(N)$ with character $\chi(d)=\big(\frac{(-1)^0s}{d}\big)$, where $s=\prod\delta^{r_\delta}=t^{-m}$. This character takes values $\pm1$. Finally, $F^\ast$ is holomorphic on $\mathfrak H$, and at every cusp it has an expansion with finitely many negative powers.
+\end{proof}
+
+\begin{theorem}[Zuckerman \cite{Z}, Bringmann--Ono \cite{BO}]\label{thm:zuck}
+Let $f$ be a weakly holomorphic modular function on $\Gz(N)$ with character. Then for every $x>0$ its $x$-th Fourier coefficient at $\infty$ equals
+\[
+\sum_{\mathfrak a}\ \sum_{\nu<0}\ a_{\mathfrak a}(\nu)\sum_{c}\frac{2\pi}{c}\sqrt{\frac{|\nu|}{x}}\;S_{\mathfrak a\infty}(\nu,x;c)\;I_1\!\Big(\frac{4\pi}{c}\sqrt{|\nu|x}\Big).
+\]
+Here $\mathfrak a$ runs over inequivalent cusps, $\nu$ over the exponents of the principal part at $\mathfrak a$ (in the local parameter of width $w_{\mathfrak a}$, normalised so that $\nu\in w_{\mathfrak a}^{-1}\Z+\kappa_{\mathfrak a}$), $a_{\mathfrak a}(\nu)$ are the principal-part coefficients, $c$ runs over the allowed moduli for the pair $(\mathfrak a,\infty)$, and $S_{\mathfrak a\infty}$ is the cusp-pair Kloosterman sum with the character.
+\end{theorem}
+
+Apply Theorem~\ref{thm:zuck} to $F^\ast$ with $x=24n-m(t-1)$, $n>\mu$. Each triple $(\mathfrak a,\nu,c)$ gives a term whose Bessel factor depends only on the rate $\beta=\sqrt{|\nu|}/c$, up to the normalisation $x=24(n-\mu)$.
+
+\subsection{Growth rates and groups}
+\begin{definition}
+For a term $T$ with rate $\beta_T$ put
+\[
+B_\beta(n):=\frac{\beta}{\sqrt{n-\mu}}\;I_1\big(4\pi\beta\sqrt{24(n-\mu)}\big).
+\]
+The \emph{group amplitude} is
+\[
+G_\beta(n):=\sum_{T:\beta_T=\beta}\,(\text{constant})\cdot S_{\mathfrak a_T\infty}(\nu_T,x;c_T),
+\]
+so that $c(n)=\sum_\beta G_\beta(n)B_\beta(n)$ for $n>\mu$.
+\end{definition}
+
+Only finitely many $(\mathfrak a,\nu)$ occur, since the principal parts are finite. The Weil bound $|S_{\mathfrak a\infty}(\nu,x;c)|\ll_{\epsilon,N,\nu} c^{1/2+\epsilon}\gcd(x,c)^{1/2}$, together with $I_1(y)\ll y$ for small $y$, makes the series absolutely convergent for weight $0$. For each $\varepsilon>0$ only finitely many $c$ satisfy $\sqrt{|\nu|}/c>\varepsilon$. Each $G_\beta$ is periodic in $n$, with period dividing $\lcm$ of the $c_T$ in the group.
+
+\begin{lemma}[uniqueness]\label{lem:unique}
+Let $(G_\beta)$ and $(G'_\beta)$ be two families of periodic functions indexed by a set of rates $\beta>0$ that has no accumulation point other than $0$. Suppose
+\[
+\sum_\beta G_\beta(n)B_\beta(n)=\sum_\beta G'_\beta(n)B_\beta(n)\qquad\text{for all } n>\mu,
+\]
+and that both series converge absolutely, with $\sum_{\beta\le\varepsilon}|G_\beta(n)|B_\beta(n)=O\big(\e^{4\pi\varepsilon\sqrt{24n}+o(\sqrt n)}\big)$ for each $\varepsilon$. Then $G_\beta=G'_\beta$ for every $\beta$.
+\end{lemma}
+\begin{proof}
+Put $D_\beta=G_\beta-G'_\beta$, and suppose some $D_\beta\not\equiv0$. Let $\beta_0$ be the largest such rate; it exists because the rates above any positive level are finite in number. Let $P$ be a period of $D_{\beta_0}$, and choose a class $r\bmod P$ with $D_{\beta_0}(r)\ne0$.
+
+For $n\equiv r\pmod P$, subtracting the two expansions gives
+\[
+0=D_{\beta_0}(r)B_{\beta_0}(n)+\sum_{\beta<\beta_0}D_\beta(n)B_\beta(n).
+\]
+Let $\beta_1<\beta_0$ be the next rate. The tail is $O\big(\e^{4\pi\beta_1\sqrt{24n}+o(\sqrt n)}\big)$, while $|B_{\beta_0}(n)|\gg n^{-3/4}\e^{4\pi\beta_0\sqrt{24n}}$. This is a contradiction as $n\to\infty$.
+\end{proof}
+
+The same argument, applied to the expansion of $c(n)$ restricted to a residue class, yields the principle used throughout.
+
+\begin{corollary}\label{cor:decide}
+Fix a class $C=\{n\equiv r\pmod L\}$. Suppose that for some $\beta_0$ we have $G_\beta(n)=0$ for all $\beta>\beta_0$ and all $n\in C$, while $G_{\beta_0}$ is a nonzero constant $g$ on $C$. Then $\sgn c(n)=\sgn g$ for all sufficiently large $n\in C$. If instead $G_\beta\equiv0$ on $C$ for every $\beta$, then $c(n)=0$ for all $n\in C$ with $n>\mu$.
+\end{corollary}
+
+Note that $G_{\beta_0}$ is real on $C$, since $c(n)$ is real and Lemma~\ref{lem:unique} applies to the expansion and its complex conjugate.
+
+\section{The least period is divisible by $t$}\label{sec:period}
+The largest rate comes from the cusps of $\Gz(t)$ of denominator exactly $k=t$, which are $\Gz(t)$-equivalent to $\infty$ for $F$. On that group the principal part is $q^{-\mu}$, and by \cite[(2.17)]{W} the group amplitude, suitably normalised, is Wang's
+\[
+\alpha(n)=\sum_{h\bmod t}{}^{*}\psi(h)\,e(-hn/t),\qquad |\psi(h)|=1 .
+\]
+Call a class $r\bmod t$ \emph{non-degenerate} if $\alpha(r)\ne0$. By Corollary~\ref{cor:decide}, for $n\equiv r\pmod t$ in a non-degenerate class, $\sgn c(n)=\sgn\alpha(r)$ eventually.
+
+\begin{proposition}\label{prop:period}
+If $(c(n))$ is UPS, then its least period of sign is divisible by $t$.
+\end{proposition}
+\begin{proof}
+Let $g$ be a proper divisor of $t$ and $s$ any residue. Then
+\[
+\sum_{j\bmod t/g}\alpha(s+jg)=\sum_h{}^*\psi(h)\,e(-hs/t)\sum_{j}e(-hj g/t)=0,
+\]
+because $t/g\nmid h$ for every unit $h$. Since the $\psi(h)$ are nonzero, $\alpha\not\equiv0$. So there is a coset $s+g\Z/t\Z$ on which $\alpha$ is not identically zero. On that coset $\alpha$ takes both a positive and a negative value, at non-degenerate classes.
+
+Now suppose the least period $L$ satisfies $t\nmid L$, and put $g=\gcd(L,t)<t$. The multiples of $L$ reduce mod $t$ to exactly $g\Z/t\Z$. So for every non-degenerate $r$ and every $j$, the classes $r$ and $r+jg$ have the same eventual sign. That is impossible on the coset just found.
+\end{proof}
+
+\section{Prime level}\label{sec:prime}
+Throughout this section $t=p$ is prime. The cusps of $\Gz(p)$ are $\infty$ and $0$. $F$ has its only pole at $\infty$, with principal part $\sum_{0\le e<\mu}c(e)q^{e-\mu}$, and it is holomorphic at $0$.
+
+\subsection{The multiplier at prime level}
+Let $M=\begin{psmallmatrix}a&b\\ c&d\end{psmallmatrix}\in\Gz(p)$ with $c>0$, and put $M_p=\begin{psmallmatrix}a&pb\\ c/p&d\end{psmallmatrix}$. Since $\eta(pM\tau)=\eta(M_p(p\tau))$, the multiplier of $F$ is
+\begin{equation}\label{eq:nuF}
+\nu_F(M)=\big(\nu_\eta(M)/\nu_\eta(M_p)\big)^m .
+\end{equation}
+Knopp's formula \cite[Ch.~4, Thm.~2]{K} gives, for $c>0$,
+\[
+\nu_\eta(M)=\Big(\frac dc\Big)e\Big(\frac{(a+d)c-bd(c^2-1)-3c}{24}\Big)\ (c\text{ odd}),\qquad
+\nu_\eta(M)=\Big(\frac cd\Big)e\Big(\frac{(a+d)c-bd(c^2-1)+3d-3-3cd}{24}\Big)\ (c\text{ even}).
+\]
+
+\begin{lemma}\label{lem:ppart}
+Let $p\ge5$ and $c=p^\alpha c'$ with $\alpha\ge1$ and $p\nmid c'$. Then $\nu_F(M)=\chi_p(d)^m\rho(M)$, where $\rho(M)=e(R/24c)$ for an integer $R$ with $p^\alpha\mid R$.
+\end{lemma}
+\begin{proof}
+\emph{Characters.} If $c$ is odd, then $\big(\frac dc\big)\big(\frac d{c/p}\big)^{-1}=\chi_p(d)$. If $c$ is even, then $\big(\frac cd\big)\big(\frac{c/p}d\big)^{-1}=\big(\frac pd\big)$, and quadratic reciprocity gives $\big(\frac pd\big)=\chi_p(d)\epsilon(d)$ with $\epsilon$ a character modulo $4$.
+
+\emph{Additive parts.} Put $j=c/p$. The difference of the additive exponents is
+\[
+\frac{p-1}{24}\big[(a+d)j-bd(pj^2+1)-3j\big],
+\]
+plus $-3dj(p-1)/24$ when $c$ is even. Multiply by $24c$. The resulting integer is a combination of $c^2(a+d)/p$, $c\,bd(pj^2+1)$, $3cj$ and $3dc^2/p$. Each of these is divisible by $p^{2\alpha-1}$ or by $c$, hence by $p^\alpha$.
+\end{proof}
+
+\subsection{Amplitudes}
+Terms of the exact formula for $F$ on $\Gz(p)$ are indexed by $e\in[0,\mu)$ and by $c\equiv0\pmod p$. Their amplitudes are
+\begin{equation}\label{eq:Kp}
+\cA_{c,e}(n)=c(e)\sum_{d\bmod c}{}^{*}\overline{\nu_F(M_d)}\;e\Big(\frac{(e-\mu)\bar d+(n-\mu)d}{c}\Big),
+\end{equation}
+where the fractional exponents are combined into a single exponential modulo $24c$. By Lemma~\ref{lem:ppart} and the Chinese remainder theorem (valid because $p\ge5$), for $c=p^\alpha c'$,
+\begin{equation}\label{eq:factor}
+\cA_{c,e}(n)=c(e)\,T_\alpha(u,v)\,R_{c',e}(n),\qquad T_\alpha(u,v)=\sum_{d\bmod p^\alpha}{}^{*}\chi_p(d)^m\,e\Big(\frac{ud+v\bar d}{p^\alpha}\Big),
+\end{equation}
+where
+\[
+u\equiv(n-\mu)\,\overline{c'},\qquad v\equiv(e-\mu)\,\overline{c'}\pmod{p^\alpha},
+\]
+reading $n-\mu$ and $e-\mu$ in $\Z_{(p)}$. In particular $\chi_p(uv)=\chi_p\big((n-\mu)(e-\mu)\big)$ does not depend on $c'$. For $c=p$ we have $T_1$, and the leading amplitude is $\alpha(n)=\cA_{p,0}(n)$ up to a unit.
+
+\begin{lemma}\label{lem:salie}
+Let $p$ be an odd prime.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item For $m$ even, $T_1(u,v)$ is the Kloosterman sum $S(u,v;p)$, and it is never $0$.
+\item Let $m$ be odd, and suppose $p\nmid uv$ and $\chi_p(uv)=-1$. Then $T_\alpha(u,v)=0$ for every $\alpha\ge1$.
+\item For $m$ odd, $T_1(u,0)=\chi_p(u)\,\mathfrak g_p\ne0$ if $p\nmid u$, and $T_1(0,v)=\chi_p(v)\,\mathfrak g_p\ne0$ if $p\nmid v$. Here $\mathfrak g_p$ is the quadratic Gauss sum. Moreover $T_1(0,0)=0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) In $\Z[\zeta_p]$ each term is $\equiv1\pmod{1-\zeta_p}$, so $S\equiv p-1\equiv-1$.
+
+(b) For $\alpha=1$, Sali\'e's evaluation gives $T_1(u,v)=\chi_p(v)\,\mathfrak g_p\sum_{x^2\equiv4uv}e(x/p)$, and the sum is empty. For $\alpha\ge2$, put $\beta=\lfloor\alpha/2\rfloor\ge1$ and write $d=d_0(1+p^{\alpha-\beta}y)$ with $y\bmod p^\beta$. Then $\chi_p(d)=\chi_p(d_0)$, and $\bar d\equiv\bar d_0(1-p^{\alpha-\beta}y)\pmod{p^\alpha}$. Summing over $y$ gives $p^\beta$ times the indicator of $ud_0\equiv v\bar d_0\pmod{p^\beta}$, that is, of $ud_0^2\equiv v$. This forces $\chi_p(uv)=1$. So the sum is $0$.
+
+(c) These are Gauss sums; $T_1(0,0)=\sum\chi_p(d)=0$.
+\end{proof}
+
+\begin{lemma}[multiplier at $c=p$]\label{lem:multp}
+For $p\ge5$,
+\[
+e^{-\pi is(h,p)}=C_p\,\chi_p(h)\,e\big(-\overline{24}(h+\bar h)/p\big),\qquad |C_p|=1 .
+\]
+Consequently, with $u\equiv\mu-r$ and $v\equiv\mu-e$ taken mod $p$,
+\[
+\alpha(r)=C_p^m\,T_1(u,v)\quad\text{at } e=0 .
+\]
+\end{lemma}
+\begin{proof}
+Take $c=p$ in Knopp's formula, using $e^{\pi is(d,c)}=e\big((a+d)/24c\big)/\varepsilon(a,b,c,d)$ from \cite[Thm.~3.4]{Ap}. Then reduce the exponent modulo $p$ using $ad\equiv1$ and the fact that $24$ is invertible mod $p$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:prime}]
+(a), $p\ge5$ and $m$ even. By Lemmas~\ref{lem:multp} and~\ref{lem:salie}(a), $\alpha(r)\ne0$ for all $r$. The $c=p$, $e=0$ group has the unique largest rate $\sqrt\mu/p$ and constant amplitude on each class mod $p$, so Corollary~\ref{cor:decide} gives $\sgn c(n)=\sgn\alpha(n\bmod p)$ eventually. By Proposition~\ref{prop:period} the least period is $p$.
+
+(a), $p=3$. Here $s(1,3)=1/18=-s(2,3)$, so $\alpha(r)=2\cos(\pi m/18+2\pi r/3)$. This vanishes if and only if $m\equiv3\pmod6$, and otherwise the same argument applies.
+
+(b). Let $r$ be degenerate, and let $e_0$ be the least $e<\mu$ with $c(e)\ne0$ and $T_1(\mu-r,\mu-e)\ne0$, if one exists. By~\eqref{eq:factor} and Lemma~\ref{lem:salie}(b), every term $(c,e)$ with $e$ ``bad'' (that is, $\chi_p((\mu-r)(\mu-e))=-1$) vanishes on the class at every level $c$. Terms with $c(e)=0$ vanish trivially. Hence all terms of rate larger than $\sqrt{\mu-e_0}/p$ vanish on the class, while the $(p,e_0)$ term is a nonzero constant there; Corollary~\ref{cor:decide} applies. If no such $e_0$ exists, every term vanishes on the class, and $c(n)=0$ there.
+
+In the exceptional case $r\equiv\mu\equiv0\pmod p$ we have $p\mid m$, and $e=1$ works, because $c(1)=-m\ne0$ and $T_1(0,-1)\ne0$ by Lemma~\ref{lem:salie}(c). For $p=3$ and $m\equiv3\pmod6$, the order-$1$ amplitude is $2c(1)\cos(-\pi m/18+2\pi(2-r)/3)$, which is nonzero on the degenerate class. Its rate $\sqrt{\mu-1}/3$ exceeds that of every term with $k\ge6$ as soon as $\mu>4/3$, i.e.\ for $m\ge21$. For $m=15$ the only faster term, $(k,e)=(6,0)$, vanishes identically on the degenerate class. This is a finite exact computation in $\Q(\zeta_{144})$, confirmed numerically to $10^{-29}$. The cases $m=3,9$ are due to Wang.
+\end{proof}
+
+\section{Composite level: the scaling law}\label{sec:scaling}
+Let $S$ be the set of primes dividing $N=576t$ or dividing the numerator or denominator of $|\nu|$ for some principal-part exponent $\nu$ of $F^\ast$ at some cusp. This set is finite.
+
+\begin{lemma}\label{lem:sunit}
+If two terms $T,T'$ have the same rate, then $c_T/c_{T'}$ is an $S$-unit.
+\end{lemma}
+\begin{proof}
+$c_T/c_{T'}=\sqrt{|\nu_T|/|\nu_{T'}|}$, which is rational, and its prime factors divide numerators or denominators of the $|\nu|$.
+\end{proof}
+
+\subsection{The Galois scaling law}
+We work with the $\Gz(t)$ expansion of $F$. For a term $T=(k,\gamma)$ of cusp type $d=\gcd(k,t)$ its amplitude is
+\begin{equation}\label{eq:model}
+A_T(n)=\sum_{h\bmod k}{}^{*}s_T(h;n),\qquad
+s_T(h;n)=\Big(\frac td\Big)^{m/2}\big(\omega_{h,k}^{-1}\omega_{th/d,\,k/d}\big)^{m}\,\kappa_T(h)\,e\Big(-\frac{hn}k\Big),
+\end{equation}
+where $\kappa_T(h)$ is the coefficient of order $\gamma$ in the expansion of the transformed product. All monomials of order $\gamma$ carry the same phase $e(\Lambda_T h'/k)$, so $\kappa_T(h)=\kappa_T\,e(\Lambda_Th'/k)$ with $hh'\equiv-1\pmod k$.
+
+Every $s_T(h;n)$ lies in $\Q(\zeta_{M},\sqrt{t/d})$ with $M=24k$. For an integer $g$ prime to $6tk$, let $\sigma_g$ be an automorphism of $\overline{\Q}$ with $\sigma_g(\zeta_M)=\zeta_M^{\,g}$; it acts on $\sqrt{t/d}$ by a sign. By Lemma~\ref{lem:sunit}, the moduli within one equal-growth group differ only by primes of $S$.
+
+\begin{lemma}[summand factorisation]\label{lem:summand}
+Let $q\notin S$ be prime and $T=(k,\gamma)$. For every $h$ prime to $24kq$,
+\[
+s_{(kq,\gamma)}(h;n)=\sigma_{\bar q}\big(s_{(k,\gamma)}(h;n)\big)\cdot e\Big(\frac{\bar k\big((\mu-n)h+\gamma\bar h\big)}{q}\Big),
+\]
+where $\bar q$ is inverse to $q$ modulo $24k$, and $\bar k,\bar h$ are inverses modulo $q$. There is no further constant.
+\end{lemma}
+\begin{proof}
+Throughout, $h$ is prime to $24kq$, and $\bar h$ denotes its inverse modulo $24kq$, hence also modulo $24k$. We use the explicit formulas, valid for $\gcd(h,24k)=1$:
+\[
+\text{(O)}\ \ \omega_{h,k}=\Big(\frac hk\Big)i^{\frac{k-1}2}e\Big(\frac{(1-k^2)(h+\bar h)}{24k}\Big)\ (k\text{ odd}),\qquad
+\text{(E)}\ \ \omega_{h,k}=\Big(\frac kh\Big)e\Big(\frac{\bar h(1-k^2)+h(2k^2-3k+1)}{24k}\Big)\ (k\text{ even}).
+\]
+These follow from Apostol~\cite[Thm.~3.4]{Ap} (the formula $e^{\pi is(d,c)}=e((a+d)/24c)/\varepsilon(a,b,c,d)$ with Apostol's evaluation of $\varepsilon$), after choosing $a\equiv\bar h\pmod{24k}$. They were checked on $3409$ pairs.
+
+\emph{Step 1: $\omega_{h,kq}$ versus $\omega_{h,k}$.} Write $e(X/24kq)=e(X\bar q/24k)\,e(X\,\overline{24k}/q)$, where the first inverse is modulo $24k$ and the second modulo $q$.
+
+(O) Here $(h/kq)=(h/k)(h/q)$. In the part modulo $24k$ we use $1-k^2q^2\equiv1-k^2\pmod{24k}$, which holds because $24\mid k(q^2-1)$. So that part equals $\sigma_{\bar q}$ of the level-$k$ exponential. The $i$-powers give
+\[
+i^{(kq-1)/2}\big/\sigma_{\bar q}\big(i^{(k-1)/2}\big)=i^{[(kq-1)-q(k-1)]/2}=i^{(q-1)/2},
+\]
+using $\bar q\equiv q\pmod 8$.
+
+(E) Here $(kq/h)=(k/h)(q/h)=(k/h)(h/q)\chi_{-4}(h)^{(q-1)/2}$ by reciprocity. In the part modulo $24k$, the $\bar h$-coefficient is again $\bar q(1-k^2)$. The $h$-coefficient is
+\[
+\bar q(2k^2-3k+1)+\bar q\big[2k^2(q^2-1)-3k(q-1)\big].
+\]
+The term $2k^2(q^2-1)$ is $\equiv0\pmod{24k}$. The term $-3k(q-1)$ contributes $e(-(q-1)\bar qh/8)$. For odd $h$ one checks:
+\begin{itemize}[leftmargin=1.5em]
+\item if $q\equiv1\pmod4$, this factor equals $(-1)^{(q-1)/4}$, and $\chi_{-4}(h)^{(q-1)/2}=1$;
+\item if $q\equiv3\pmod4$, writing $a=\tfrac{q-1}2\bar q$ (odd), it equals $i^{-ah}=i^{-a}\chi_{-4}(h)$, which cancels $\chi_{-4}(h)^{(q-1)/2}=\chi_{-4}(h)$ and leaves $i^{-a}$.
+\end{itemize}
+In both cases the leftover constant equals $i^{(q-1)/2}$, because $(q-1)(q+1)/2\equiv0\pmod4$.
+
+Hence, in all cases,
+\begin{equation}\label{eq:omegaq}
+\omega_{h,kq}=\sigma_{\bar q}(\omega_{h,k})\cdot\Big(\frac hq\Big)\,i^{\frac{q-1}2}\,e\Big(\frac{\overline{24k}(h+\bar h)}{q}\Big).
+\end{equation}
+For the part modulo $q$ we used $1-k^2q^2\equiv1$ and $2k^2q^2-3kq+1\equiv1\pmod q$.
+
+\emph{Step 2: the second factor.} Let $K=k/d$ and lift $th/d$ to $H_0=(t/d)h+K\ell$ with $\gcd(H_0,6)=1$. Since $\gcd(K,t/d)=1$, $\ell$ may be taken independent of $h$, and even whenever $2\nmid t/d$. At level $kq$ use $H=(t/d)h+Kq\ell'$ with $q\ell'\equiv\ell\pmod{24}$. Then $H\equiv H_0\pmod{24K}$ and $H\equiv(t/d)h\pmod q$. Applying~\eqref{eq:omegaq} to $(H,K)$ gives
+\[
+\omega_{H,Kq}=\sigma_{\bar q}(\omega_{H_0,K})\Big(\frac{(t/d)h}{q}\Big)i^{\frac{q-1}2}e\Big(\frac{\overline{24K}(H+\bar H)}{q}\Big).
+\]
+
+\emph{Step 3: combine.} In $\omega_{h,kq}^{-m}\omega_{H,Kq}^{m}$ the factors $i^{\pm m(q-1)/2}$ cancel, and the characters leave $\big(\frac{t/d}q\big)^m$. For odd $m$, the Galois sign of $(t/d)^{m/2}$ is $\sigma_{\bar q}(\sqrt{D})/\sqrt D=\big(\frac{D^\ast}{q}\big)$, where $D$ is the squarefree part of $t/d$ and $D^\ast$ its discriminant. Since $\big(\frac{D^\ast}q\big)=\big(\frac{t/d}q\big)$, the two signs cancel.
+
+The phase $e(\Lambda_Th'/kq)$ and the term $e(-hn/kq)$ split in the same way. Their parts modulo $24k$ are $\sigma_{\bar q}$ of the level-$k$ phases, and their parts modulo $q$ are $e(-\bar k\Lambda_T\bar h/q)$ and $e(-\bar knh/q)$. The rational coefficient $\kappa_T$ is fixed by $\sigma_{\bar q}$.
+
+The part modulo $q$ collects to
+\[
+\bar k\Big[\tfrac{m}{24}\big(-(h+\bar h)+(t h+\tfrac{d^2}t\bar h)\big)-nh-\Lambda_T\bar h\Big]=\bar k\big[(\mu-n)h+\gamma\bar h\big],
+\]
+using $\gamma=\frac{m(d^2-t)}{24t}-\Lambda_T$. The identity was confirmed numerically: the constant equals $1$ for every member of the $26$ multi-member groups tested (\texttt{eps\_table.py}).
+\end{proof}
+
+\begin{proposition}[Galois scaling law]\label{prop:scaling}
+Let $q\notin S$ be prime and $G_\beta$ an equal-growth group. Then
+\[
+G_{\beta/q}(n)=S\big(\mu-n,\ \beta^2;\ q\big)\ \sigma_{\bar q}\big(G_\beta(n)\big),
+\]
+where $S(\cdot,\cdot;q)$ is the Kloosterman sum, with $\beta^2=\gamma/k^2$ read modulo $q$. The Kloosterman factor is never zero. In particular $G_{\beta/q}(n)=0$ if and only if $G_\beta(n)=0$.
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:sunit} the members of $G_{\beta/q}$ are exactly the members of $G_\beta$ with moduli multiplied by $q$. Sum Lemma~\ref{lem:summand} over $h\bmod kq$, using $h\leftrightarrow(h\bmod 24k,\ h\bmod q)$. The $q$-sum is
+\[
+\sum_{h\bmod q}{}^{*}e\big(\bar k((\mu-n)h+\gamma\bar h)/q\big)=S\big(\mu-n,\bar k^{\,2}\gamma;q\big),
+\]
+and $\bar k^{\,2}\gamma\equiv\gamma/k^2=\beta^2$ is common to all members. A Kloosterman sum modulo a prime is $\equiv-1\pmod{1-\zeta_q}$ (or is a nonzero Ramanujan sum), hence nonzero. Galois automorphisms preserve vanishing.
+\end{proof}
+
+\begin{proposition}[stable range]\label{prop:stable}
+Let $q\in S$. Put $e_q=\kappa_q=3$ if $q=2$ and $e_q=\kappa_q=1$ if $q$ is odd, let
+\[
+W_q=v_q(24t)+\max_\gamma v_q\big(\text{numerator of }24t\gamma\big),
+\]
+the maximum being over all pole orders, and set
+\[
+A_q=\max\big\{v_q(24t)+v_q(t)+3,\ 2(W_q+e_q)+\kappa_q+3\big\}.
+\]
+Let $G_\beta$ be a group all of whose moduli satisfy $v_q(k)\ge A_q+1$, and let $G_{\beta q}$ be the group obtained by dividing every modulus by $q$. Then for every $n$,
+\[
+G_\beta(n)\neq0\ \Longrightarrow\ G_{\beta q}(n)\neq0 .
+\]
+\end{proposition}
+\begin{proof}
+Write $k=q^ak_0$ with $q\nmid k_0$, and put $A=a+v_q(24)$. Take $a\ge v_q(24t)+v_q(t)+3$. Then scaling by $q$ does not change the cusp type $d$, and moreover:
+\begin{itemize}[leftmargin=1.5em]
+\item $1-k^2\equiv1\pmod{q^A}$;
+\item $2k^2-3k+1\equiv1-3k\pmod{q^A}$, which matters only for $q=2$, where it contributes the factor $e(-h/8)$;
+\item the bounded-denominator phases of the multiplier are trivial on the $q$-part.
+\end{itemize}
+
+\emph{Factorisation.} By the Chinese remainder theorem each summand splits into a prime-to-$q$ part and a $q$-part. By Steps~1--3 of Lemma~\ref{lem:summand}, applied to the prime-to-$q$ modulus (where the needed congruence holds because the prime-to-$q$ part of $24$ divides $q^2-1$), the prime-to-$q$ part at level $k/q$ is $\sigma'^{-1}$ of the prime-to-$q$ part at level $k$. Here $\sigma'$ acts as $\sigma_{\bar q}$ on roots of unity of order prime to $q$ and trivially on those of $q$-power order.
+
+The $q$-part of the member $T_i=(k_i,\gamma_i)$ is computed exactly as the part modulo $q$ in Lemma~\ref{lem:summand}. After the substitution $h\mapsto k_i'h$, where $k_i'$ is the prime-to-$q$ part of $24k_i$, it equals
+\[
+\psi(k_i')\,\mathcal T^{(A_i)}(x,y_i),\qquad \mathcal T^{(A)}(x,y)=\sum_{h\bmod q^{A}}{}^{*}\psi(h)\,\theta(h)\,e\big((xh+y\bar h)/q^{A}\big).
+\]
+Here:
+\begin{itemize}[leftmargin=1.5em]
+\item $\psi$ is a real character of conductor dividing $8$ (if $q=2$) or $q$ (if $q$ is odd), determined by $t$, $m$ and $d$;
+\item $\theta(h)=e(-ch/8)$ for $q=2$ and $\theta=1$ otherwise;
+\item $x=c_1(\mu-n)$ with $c_1$ a fixed unit;
+\item $y_i=c_2\gamma_i k_i'^{-2}=c_3\beta^2q^{2a_i}$ with $c_2,c_3$ fixed units.
+\end{itemize}
+In particular $y_i$ depends only on $\beta$ and $a_i$.
+
+\emph{Subgroups.} Split $G_\beta$ into subgroups $G_\beta^{(\delta)}$ according to the $q$-exponent $a_i=a+\delta$. Within one subgroup, the $q$-parts are $\psi(k_i')\,\mathcal T^{(A+\delta)}(x,y_\delta)$ with a common $y_\delta$, so
+\[
+G_\beta^{(\delta)}(n)=\mathcal T^{(A+\delta)}(x,y_\delta)\cdot\sum_i\psi(k_i')\,P_i(n),
+\]
+where the $P_i$ are the prime-to-$q$ parts. Likewise
+\[
+G_{\beta q}^{(\delta)}(n)=\mathcal T^{(A+\delta-1)}(x,y_\delta)\cdot\sigma'^{-1}\Big(\sum_i\psi(k_i')P_i(n)\Big),
+\]
+because $\psi(k_i')=\pm1$ is fixed by $\sigma'$.
+
+\emph{Stationary phase.} Let $B\ge 2(v_q(y)+e_q)+\kappa_q+2$; this holds at every level used, since $v_q(y_\delta)\le W_q$. Put $\beta'=\lfloor B/2\rfloor$. Then $B-\beta'\ge\kappa_q$, so $\psi$ and $\theta$ are invariant under the substitution below, and $\beta'>v_q(y)+e_q$. Substitute $h=h_0(1+q^{B-\beta'}z)$. This leaves $\psi$ and $\theta$ invariant, and summing over $z$ gives
+\[
+\mathcal T^{(B)}(x,y)=q^{\beta'}\sum_{xh_0^2\equiv y\ (q^{\beta'})}\psi(h_0)\,\theta(h_0)\,e\big((xh_0+y\bar h_0)/q^{B}\big).
+\]
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item \emph{Solvability.} The congruence has a solution if and only if $v_q(x)=v_q(y)$ and $(x/q^{v})(y/q^{v})$ is a square modulo $q$ (modulo $8$ if $q=2$), where $v=v_q(y)$. This condition does not depend on $B$. Since $v_q(y_\delta)=v_q(c_3\beta^2)+2(a+\delta)$ is different for different $\delta$, at most one subgroup has a solvable congruence at a given $n$. All other subgroups vanish at $n$, at both levels.
+\item \emph{Non-vanishing.} Suppose the congruence is solvable. For odd $q$ the solutions are $h_0\equiv\pm h^\ast$. The sum equals $q^{B/2}$, times a nonzero Gauss-sum factor when $B$ is odd, times
+\[
+\psi(h^\ast)\big(e(2x^\ast/q^B)+\psi(-1)e(-2x^\ast/q^B)\big),\qquad x^{\ast2}\equiv xy .
+\]
+This is $2\cos$ or $2i\sin$ of $4\pi x^\ast/q^B$. Since $v_q(x^\ast)=v$ is fixed and $B$ is large, it is nonzero.
+
+For $q=2$ the solutions are $\pm h^\ast$ and $\pm h^\ast(1+2^{B-1})$. Since $B-1\ge3$, the factors $\psi$ and $\theta$ take the same values at $h^\ast$ and $h^\ast(1+2^{B-1})$. Also $2x^\ast(1+2^{B-1})/2^B\equiv2x^\ast/2^B\pmod1$ because $x^\ast$ is an integer. So the four terms pair up to
+\[
+2\,\psi(h^\ast)\Big(\theta(h^\ast)e(2x^\ast/2^B)+\psi(-1)\theta(-h^\ast)e(-2x^\ast/2^B)\Big).
+\]
+This vanishes only if $e(h^\ast c/4-4x^\ast/2^B)=-\psi(-1)$, that is only if $4x^\ast/2^B\equiv h^\ast c/4+\{0,\tfrac12\}\pmod1$. That forces $v_2(x^\ast)\le B-4$ to equal a specific value. It is impossible once $B>v+4$, because $v_2(x^\ast)=v$ is fixed.
+\end{enumerate}
+
+\emph{Conclusion.} If $G_\beta(n)\neq0$, then by (i) exactly one subgroup $G_\beta^{(\delta)}$ is nonzero at $n$. Its factor $\mathcal T^{(A+\delta)}(x,y_\delta)$ is nonzero and $\sum_i\psi(k_i')P_i(n)\neq0$. By (i) and (ii) at level $A+\delta-1\ge A_q$, $\mathcal T^{(A+\delta-1)}(x,y_\delta)\neq0$. Hence $G_{\beta q}^{(\delta)}(n)\neq0$, while all other subgroups of $G_{\beta q}$ vanish at $n$. So $G_{\beta q}(n)\neq0$.
+\end{proof}
+
+\section{Finiteness and the proof of Theorem~\ref{thm:main}}\label{sec:finite}
+\begin{definition}
+A modulus $c$ is \emph{rigid} if every prime factor of $c$ lies in $S$ and $v_q(c)\le A_q+1+2\Delta_q$ for all $q\in S$. A group is rigid if all its moduli are rigid. Put
+\[
+L=\lcm\big(t,\ \text{all rigid moduli}\big),
+\]
+which is finite.
+\end{definition}
+
+\begin{lemma}\label{lem:reduce}
+Every non-rigid group is obtained from a rigid group $G_{\beta_0}$ by finitely many scalings: first by primes $q\in S$ in the stable range, then by an integer $c'$ all of whose prime factors lie outside $S$. Moreover,
+\[
+G_{\beta_0/(c''c')}(n)=\Big(\prod\cK\Big)\,\sigma\big(G_{\beta_0}(n)\big),
+\]
+where $\sigma$ is a Galois automorphism and $\prod\cK$ is a product of scalars determined by $n$ and the scalings.
+\end{lemma}
+\begin{proof}
+Remove from the moduli the primes outside $S$; by Lemma~\ref{lem:sunit} they are common to all members. Then lower the $q$-exponents to the cap, which is possible by Lemma~\ref{lem:sunit} and the choice of $2\Delta_q$. Apply Proposition~\ref{prop:scaling} at each step.
+\end{proof}
+
+\begin{lemma}\label{lem:nocollide}
+If $\beta_1/c_1=\beta_2/c_2$ with $G_{\beta_1},G_{\beta_2}$ rigid and $c_1,c_2$ composed of primes outside $S$, then $c_1=c_2$ and $\beta_1=\beta_2$.
+\end{lemma}
+\begin{proof}
+$\beta_1/\beta_2$ is an $S$-unit by Lemma~\ref{lem:sunit}, and $c_1/c_2$ is a unit away from $S$. Their equality forces both ratios to be $1$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $G_\beta$ be any group with $G_\beta(n)\ne0$ for some $n$. By Lemma~\ref{lem:reduce}, $G_\beta$ is obtained from a rigid group $G_{\beta_0}$, with $\beta_0\ge\beta$, by scalings. By Proposition~\ref{prop:scaling} (for primes outside $S$, where the amplitude is multiplied by a nonzero Kloosterman sum and a Galois automorphism is applied, without changing $n$) and Proposition~\ref{prop:stable} (for primes of $S$ beyond the caps), $G_\beta(n)\ne0$ implies $G_{\beta_0}(n)\ne0$.
+
+Consequently, at every $n$ the first non-vanishing group (in order of decreasing rate) is rigid. Rigid group amplitudes are constant on classes modulo $L$. Fix a class $C$ modulo $L$.
+\begin{itemize}[leftmargin=1.5em]
+\item If some rigid group is nonzero on $C$, let $G^\star$ be the fastest one. Every faster group, rigid or not, vanishes on $C$: rigid ones by the choice of $G^\star$, and non-rigid ones because their rigid ancestor is faster than $G^\star$ and hence vanishes on $C$. Moreover $G^\star$ is a nonzero real constant on $C$, since $c(n)$ is real. Corollary~\ref{cor:decide} gives $\sgn c(n)=\sgn G^\star$ for large $n\in C$.
+\item If every rigid group vanishes on $C$, then every group vanishes on $C$, and $c(n)=0$ there.
+\end{itemize}
+Hence $(c(n))$ is UPS with period dividing $L$. Proposition~\ref{prop:period} gives $t\mid$ least period.
+\end{proof}
+
+\section{Numerical verification}\label{sec:num}
+All steps were checked numerically; the scripts accompany the paper.
+\begin{itemize}[leftmargin=1.5em]
+\item The eta multiplier formula was checked on $39$ random matrices, and the resulting explicit Dedekind-sum phases on $3409$ pairs.
+\item Twisted Sali\'e sums modulo $p^\alpha$ were checked in $408$ cases.
+\item The prime-level vanishing criterion was checked in $486$ cases at levels up to $p^2$ and $5p^2$. The predicted degenerate classes agree with exact computation in all $5605$ cases.
+\item The Galois scaling law (Proposition~\ref{prop:scaling}) holds in $364$ group tests, including $t=6,8,10,12,15$. Its summand-level form (Lemma~\ref{lem:summand}) holds in $20$ cases, and its stable-range form (Proposition~\ref{prop:stable}) in $112$ cases.
+\item A regression of the resulting sign predictions against exact coefficients covers $t\le12$ and $m(t-1)\le60$ ($21\,899$ coefficients), with no discrepancy once the truncation is large enough.
+\item \emph{Stress tests.}
+\begin{itemize}[leftmargin=1.5em]
+\item The exact identity of Lemma~\ref{lem:summand} holds on $45$ randomly chosen terms ($t\le20$, $m\le12$, both parities of $k$).
+\item Proposition~\ref{prop:stable} holds in $26$ checks with $n$ chosen to vary $v_q(24n-m(t-1))$. The local lemma underlying it (vanishing of $\mathcal T^{(B)}(x,y)$ exactly when the congruence is unsolvable, at the explicit threshold $B\ge2(v_q(y)+e_q)+\kappa_q+2$) holds in $186$ direct tests. These include $q=2$ with all four characters modulo $8$ and all eight twists $\theta$, up to $B=13$.
+\item \emph{End to end.} Predicting every sign from \emph{rigid} groups alone, as the proof asserts is possible, reproduces brute force exactly: $15\,613$ coefficients for $13$ pairs, including Wang's exceptional cases $(3,9)$, $(4,4)$ and $(5,5)$.
+\item Brute-force least sign periods on $[N/3,N]$ with $N=2400$ equal $t$ for $12$ pairs beyond Wang's range. These windows include $n$ with $v_q(24n-m(t-1))$ up to $8$.
+\end{itemize}
+\item Brute-force sign periods were computed for all $124$ pairs with $t\le12$ and $24<m(t-1)\le72$. The least period is exactly $t$ in every case.
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{A} G.~E.~Andrews, On a conjecture of Peter Borwein, \emph{J. Symbolic Comput.} \textbf{20} (1995), 487--501.
+\bibitem{Ap} T.~M.~Apostol, \emph{Modular Functions and Dirichlet Series in Number Theory}, 2nd ed., Springer, 1990.
+\bibitem{BO} K.~Bringmann and K.~Ono, Coefficients of harmonic Maass forms, in \emph{Partitions, $q$-Series, and Modular Forms}, Dev. Math. 23, Springer, 2012.
+\bibitem{DI} J.-M.~Deshouillers and H.~Iwaniec, Kloosterman sums and Fourier coefficients of cusp forms, \emph{Invent. Math.} \textbf{70} (1982), 219--288.
+\bibitem{Iw} H.~Iwaniec, \emph{Spectral Methods of Automorphic Forms}, 2nd ed., AMS, 2002.
+\bibitem{IK} H.~Iwaniec and E.~Kowalski, \emph{Analytic Number Theory}, AMS Colloquium Publications 53, 2004.
+\bibitem{K} M.~I.~Knopp, \emph{Modular Functions in Analytic Number Theory}, Markham, 1970.
+\bibitem{O} K.~Ono, \emph{The Web of Modularity}, CBMS 102, AMS, 2004.
+\bibitem{SZ} M.~J.~Schlosser and N.~H.~Zhou, On the infinite Borwein product raised to a positive real power, \emph{Ramanujan J.} \textbf{61} (2023), 515--543.
+\bibitem{W} L.~Wang, Sign changes of coefficients of powers of the infinite Borwein product, \emph{Adv. Appl. Math.} \textbf{141} (2022), 102405.
+\bibitem{Z} H.~S.~Zuckerman, On the coefficients of certain modular forms belonging to subgroups of the modular group, \emph{Trans. Amer. Math. Soc.} \textbf{45} (1939), 298--321.
+\end{thebibliography}
+\end{document}

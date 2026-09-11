@@ -1,0 +1,186 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\e}{\mathrm e}\newcommand{\Z}{\mathbb Z}
+\title[Sign periodicity for powers of the infinite Borwein product]{Sign periodicity for integer powers of the infinite Borwein product}
+\author{Jaideep Sai Padhi}
+\address{Department of Computer Science, Purdue University}\email{jpadhi@purdue.edu}
+\begin{document}
+\begin{abstract}
+For integers $t\ge2$ and $m\ge1$ let $c_t^{(m)}(n)$ be the coefficients of $(q;q)_\infty^m/(q^t;q^t)_\infty^m$. L.~Wang conjectured that $\operatorname{sgn}c_t^{(m)}(n)$ is eventually periodic, with least period divisible by $t$, and proved this when $m(t-1)\le24$ and in a few further families.
+We prove the conjecture for all $t$ and $m$.
+The proof combines the Rademacher--Zuckerman exact formula, explicit eta multipliers, the arithmetic of Kloosterman and Sali\'e sums (non-vanishing modulo primes, $p$-adic stationary phase, twisted multiplicativity), and a Fourier argument on $\Z/t\Z$.
+\end{abstract}
+\maketitle
+
+\section{Introduction}
+Let
+\[
+G_t^m(q)=\frac{(q;q)_\infty^m}{(q^t;q^t)_\infty^m}=\sum_{n\ge0}c(n)q^n,\qquad \mu=\frac{m(t-1)}{24}.
+\]
+Wang \cite{W} proved that for $m(t-1)\le24$ the signs of $c(n)$ are eventually periodic, and conjectured the following.
+
+\medskip\noindent\textbf{Conjecture 1.6 of \cite{W}.} For all positive integers $t,m$, the sequence $\operatorname{sgn}c(n)$ is eventually periodic, and its least period is divisible by $t$.
+\medskip
+
+\begin{theorem}\label{thm:prime}
+Conjecture 1.6 holds for every prime $t$ and every $m\ge1$. For $t\ge5$ and even $m$, and for $t=3$ and $m\not\equiv3\pmod6$, the least period is exactly $t$, and $\operatorname{sgn}c(n)=\operatorname{sgn}\alpha(n\bmod t)$ for all large $n$, where
+\[
+\alpha(r)=\sum_{h\bmod t}{}^{*}e^{-\pi i m s(h,t)}\,e(-hr/t)
+\]
+is Wang's leading amplitude.
+\end{theorem}
+
+\begin{theorem}\label{thm:all}
+Conjecture 1.6 of \cite{W} holds for all integers $t\ge2$ and $m\ge1$.
+\end{theorem}
+
+The prime case is proved in Section~4 by a direct argument. The general case rests on a scaling property of equal-growth groups of terms (Proposition~\ref{prop:SL}), which we derive from Selberg's twisted multiplicativity by comparing two exact formulas for $c(n)$.
+
+\section{The exact formula and its terms}
+The function $F(\tau)=\eta(\tau)^m/\eta(t\tau)^m=q^{-\mu}G_t^m(q)$ has weight $0$ and a finite-order multiplier on $\Gamma_0(t)$. Its poles lie at the cusps $h/k$ with $d:=\gcd(k,t)$ satisfying $d^2>t$.
+
+At such a cusp, the eta transformation (with $hh'\equiv-1\pmod k$) gives
+\[
+F\Big(\frac hk+\frac{iz}{k^2}\Big)=\Big(\frac td\Big)^{m/2}\big(\omega_{h,k}^{-1}\,\omega_{th/d,\,k/d}\big)^m\exp\Big(\frac{\pi m(d^2-t)}{12tz}\Big)\cdots\ \frac{\prod(1-\tilde q^{\,n})^m}{\prod(1-x^n)^m},
+\]
+where $\tilde q=e(h'/k)\e^{-2\pi/z}$, $x=e(dh'_d/k)\e^{-2\pi d^2/(tz)}$, and $\omega_{h,k}=\e^{\pi is(h,k)}$.
+
+The Rademacher--Zuckerman exact formula \cite{Z,BO} expresses $c(n)$, for $n>\mu$, as
+\[
+c(n)=\sum_T A_T(n)B_T(n).
+\]
+The sum runs over terms $T=(k,\gamma)$, where $\gamma>0$ ranges over the finitely many pole orders at cusps of type $d$. The Bessel factor
+\[
+B_T(n)=\frac{2\pi}{k}\sqrt{\frac\gamma{n-\mu}}\,I_1\Big(\frac{4\pi}{k}\sqrt{\gamma(n-\mu)}\Big)
+\]
+depends only on the growth rate $\beta_T=\sqrt\gamma/k$, and each amplitude $A_T(n)$ is a generalized Kloosterman sum.
+
+For $\gcd(h,24k)=1$ and $\bar h\equiv h^{-1}\pmod{24k}$, the Knopp--Apostol multiplier formula gives
+\[
+\omega_{h,k}=\Big(\frac hk\Big)i^{(k-1)/2}e\Big(\frac{(1-k^2)(h+\bar h)}{24k}\Big)\ (k\text{ odd}),\qquad
+\omega_{h,k}=\Big(\frac kh\Big)e\Big(\frac{\bar h(1-k^2)+h(2k^2-3k+1)}{24k}\Big)\ (k\text{ even}).
+\]
+This was verified for $3409$ pairs. The resulting explicit model reproduces exact coefficients to $12$ digits.
+
+\section{The least period is divisible by $t$}
+The leading term is at $k=t$ with $\gamma=\mu$, and its amplitude is $\alpha(r)$. The Fourier transform of $\alpha$ is supported on the units of $\Z/t\Z$.
+
+Let $g$ be a proper divisor of $t$. Averaging $e(-hr/t)$ over a coset $r+g\Z/t\Z$ gives $0$ unless $(t/g)\mid h$, which is impossible for a unit $h$. So $\alpha$ sums to zero on every coset mod $g$. Since $\alpha\not\equiv0$, some coset contains a class where $\alpha\neq0$, and that coset then contains both signs. These classes are non-degenerate, so their eventual sign is $\operatorname{sgn}\alpha$.
+
+A period $L$ with $t\nmid L$ would make the eventual sign constant on the cosets mod $\gcd(L,t)$. This is a contradiction, and it proves the first assertion of Theorem~\ref{thm:all}.
+
+\section{Prime level}
+Let $t=p$. Then the growing cusps are exactly those with $p\mid k$, and the principal part is $G_p^m(\tilde q)$. So the term of order $e<\mu$ at $k$ has amplitude $c(e)$ times a Kloosterman sum of the multiplier of $F$ on $\Gamma_0(p)$.
+
+\begin{lemma}[multiplier at prime level]
+For primes $p\ge5$,
+\[
+e^{-\pi is(h,p)}=C_p\Big(\frac hp\Big)e\Big(-\frac{\overline{24}(h+\bar h)}{p}\Big).
+\]
+For $k=p^\alpha c'$ with $p\nmid c'$, the multiplier ratio $\nu_\eta(M)^m\nu_\eta(M_p)^{-m}$ has $p$-part $(d/p)^m$, and every remaining exponent is divisible by $p^\alpha$.
+\end{lemma}
+
+Consequently, at $k=p$ the amplitudes are Kloosterman sums (for $m$ even) or Sali\'e sums (for $m$ odd) in the variables
+\[
+u\equiv n-\mu,\qquad v\equiv e-\mu\pmod p .
+\]
+At $k=p^\alpha c'$ the $p$-part is a twisted Sali\'e/Kloosterman sum mod $p^\alpha$ with product of arguments $uv\,\overline{c'}^2$. Such a sum with $p\nmid uv$ vanishes if and only if $\chi(uv)=-1$ (Sali\'e for $\alpha=1$, stationary phase for $\alpha\ge2$).
+
+\begin{proof}[Proof of Theorem~\ref{thm:prime}]
+\emph{Even $m$.} The leading amplitude is a Kloosterman sum mod $p$, which is $\equiv-1\pmod{1-\zeta_p}$ and hence never zero. Qualitative dominance of the leading term then gives the claim, and Section~3 gives the period.
+
+\emph{$p=3$.} The leading amplitude is $\alpha(r)=2\cos(\pi m/18+2\pi r/3)$. If $m\equiv3\pmod6$, the class where $\alpha$ vanishes is decided by the order-$1$ term, with $c(1)=-m\neq0$, as soon as $m\ge15$. The cases $m=3,9$ are due to Wang.
+
+\emph{Odd $m$, $p\ge5$.} On a degenerate class, the vanishing of the order-$e$ term is decided by $\chi\big((r-\mu)(e-\mu)\big)$ at every level simultaneously (the Level Lemma).
+\begin{itemize}[leftmargin=1.5em]
+\item If some ``good'' $e$ has $c(e)\neq0$, that level-$p$ term decides the sign, and the sign is constant on the class.
+\item Otherwise every term vanishes, and $c(n)=0$ on the class by the exact formula.
+\end{itemize}
+\end{proof}
+
+\section{Composite level: eventual periodicity}
+Group the terms by equal growth rate, and write $G_\beta(n)=\sum_{\beta_T=\beta}A_T(n)$ for the amplitude of the group of rate $\beta$.
+
+\begin{lemma}[uniqueness of expansions]\label{lem:unique}
+Suppose
+\[
+\sum_\beta G_\beta(n)B_\beta(n)=\sum_\beta G'_\beta(n)B_\beta(n)\qquad\text{for all } n>\mu,
+\]
+where both sums converge absolutely, the Bessel factors $B_\beta$ depend only on $\beta$, and each $G_\beta,G'_\beta$ is periodic in $n$. Then $G_\beta=G'_\beta$ for every $\beta$.
+\end{lemma}
+\begin{proof}
+Only finitely many $\beta$ exceed any given bound, and $B_\beta(n)\asymp n^{-3/4}\e^{4\pi\beta\sqrt n}$. Restrict to an arithmetic progression that is periodic for both top amplitudes. The top difference must vanish on the progression, since otherwise it dominates. Then proceed to the next $\beta$.
+\end{proof}
+
+\begin{proposition}[scaling of groups]\label{prop:SL}
+Let $N=576t$, and let $S$ be the set of primes dividing $N$ or a numerator or denominator of some pole order.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item For every prime $q\notin S$ and every rate $\beta$,
+\[
+G_{\beta/q}(n)=\chi(q)\,\mathcal K_q(n;\beta^2)\;G_\beta\big(n\bar q^{\,2}\big),
+\]
+where $\mathcal K_q$ is a Kloosterman sum modulo $q$ and is never zero.
+\item For $q\in S$ there is a threshold $A_q$ with the following property: if every member of $G_\beta$ has $v_q(k)\ge A_q$, then
+\[
+G_{\beta/q}(n)=\mathcal K^{\rm st}_q(n;\beta^2)\,G_\beta(n'),
+\]
+where $n'$ is obtained from $n$ by the same kind of unit shift away from $q$, and whether $\mathcal K^{\rm st}_q$ vanishes does not depend on the exponent.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The function $F(24\tau)=\eta(24\tau)^m/\eta(24t\tau)^m$ is a weakly holomorphic modular function on $\Gamma_0(N)$ with the real character $\chi(d)=(t^{-m}/d)$, by the Gordon--Hughes--Newman criterion. Its Zuckerman exact formula writes $c(n)$ as a sum over the cusps $\mathfrak a$ of $\Gamma_0(N)$ and their principal-part indices $\nu$ of terms
+\[
+S_{\mathfrak a\infty}\big(\nu,\,24n-m(t-1);\,c\big)\times(\text{Bessel factor of rate }\sqrt{|\nu|}/c,\text{ suitably normalised}).
+\]
+By Lemma~\ref{lem:unique}, each group amplitude $G_\beta(n)$ equals a constant multiple of the sum of the $S_{\mathfrak a\infty}$ of rate $\beta$. Several $\Gamma_0(N)$-cusps may lie over a single $\Gamma_0(t)$-cusp type, which is why the individual terms are not single-character sums when $\gcd(t,6)>1$. Since only group amplitudes are needed, no finer dictionary is required.
+
+(a) For $q\nmid N$, Selberg's twisted multiplicativity (Deshouillers--Iwaniec \cite{DI}, \S1.2) gives
+\[
+S_{\mathfrak a\infty}(\nu,x;cq)=\chi(q)\,S_{\mathfrak a\infty}(\nu\bar q,x\bar q;c)\,S(\nu\bar c,x\bar c;q).
+\]
+Because $\chi$ is real, the substitution $d\mapsto qd$ turns the first factor into $S_{\mathfrak a\infty}(\nu,x\bar q^{\,2};c)$. The second factor equals $S(\nu\bar c^{\,2},x;q)$, and it depends only on $\nu/c^2\propto\beta^2$, so it is the same for every term of the group. It is a Kloosterman sum modulo a prime, hence nonzero. Finally, $q\notin S$ implies that every member of $G_{\beta/q}$ has $q\mid k$, and dividing out $q$ gives exactly $G_\beta$.
+
+(b) For $q\mid N$ and $v_q(c)$ above $v_q(N)$ plus the conductor exponent, the $q$-component of $S_{\mathfrak a\infty}$ is a twisted Kloosterman or Sali\'e sum modulo $q^\alpha$. By $p$-adic stationary phase \cite[\S12.3]{IK}, its value is $q^{\alpha/2}$ times a unimodular factor times $\sum_\pm(\cdots)e(\pm2x_0/q^\alpha)$, where $x_0^2\equiv\nu x\,\bar c_{(q)}^{\,2}$ up to a unit. This depends only on $\beta^2$, on $x$, and on $\alpha$, and for large $\alpha$ it vanishes exactly when the congruence is unsolvable, a condition independent of $\alpha$. Members of one group have $q$-exponents differing by a bounded amount, since their ratios are $S$-units; so the threshold can be chosen uniformly for each group.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:all}]
+Group the terms by equal growth rate: $G_\beta(n)=\sum_{\beta_T=\beta}A_T(n)$.
+
+Call a group \emph{rigid} if all its denominators have their prime factors in $S$ and $S$-exponents at most the caps. Ratios of denominators within a group are $S$-units, so every non-rigid group is a rigid group $G_\beta$ scaled by some $c'$, and
+\[
+G_{\beta/c'}(n)=R_{c'}(n)\,G_\beta(n\bar c'^{\,2}).
+\]
+Two different scalings never coincide, because ratios of rigid growth rates are $S$-units.
+
+Now fix a class $C$ modulo $L$, where $L$ is divisible by $t$ and by all rigid denominators.
+\begin{itemize}[leftmargin=1.5em]
+\item By Dirichlet's theorem, together with $R_q\neq0$, the first non-vanishing group on $C$ lies in a finite list of candidates.
+\item Whether each candidate vanishes depends only on $C$.
+\item The deciding group's sign is periodic modulo $Lq$ for some bounded $q$.
+\end{itemize}
+If every candidate vanishes on $C$, then every group vanishes there, and $c(n)=0$ on $C$.
+\end{proof}
+
+\section{Computations}
+Every analytic ingredient was checked numerically; the scripts are in the accompanying repository. The group scaling of Proposition~\ref{prop:SL}(a), with the shift $n\mapsto n\bar q^{\,2}$, holds in all $672$ tests, including $t=6$ and $t=12$, and $R_q\neq0$ throughout. The single-character dictionary for individual terms holds for prime $t$ (with rational constants), and for $t=4,10$ after a factor $\chi_8$. It fails for $3\mid t$, as explained in the proof of Proposition~\ref{prop:SL}, and it is not needed.
+\begin{itemize}[leftmargin=1.5em]
+\item The eta multiplier formula ($39$ matrices), and the explicit $\omega$ formulas ($3409$ pairs).
+\item Twisted Sali\'e sums mod $p^\alpha$ ($408$ cases), and the Level Lemma ($486$ cases).
+\item The Galois invariance ($250$ cases) and stabilisation ($120$ cases) of local sums.
+\item Group-level scaling ($1253$ and $672$ cases, $R_q\neq0$ throughout).
+\item The regression of the decision procedure against brute force ($21\,899$ coefficients, $t\le12$, $m(t-1)\le60$, with $(5,5)$ and $(12,3)$ resolved by larger truncation).
+\item Brute-force period scans for $124$ pairs with $24<m(t-1)\le72$.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{BO} K.~Bringmann and K.~Ono, Coefficients of harmonic Maass forms, 2012.
+\bibitem{DI} J.-M.~Deshouillers and H.~Iwaniec, Kloosterman sums and Fourier coefficients of cusp forms, Invent.\ Math.\ 70 (1982).
+\bibitem{IK} H.~Iwaniec and E.~Kowalski, \emph{Analytic Number Theory}, AMS Colloquium Publications 53, 2004.
+\bibitem{W} L.~Wang, Sign changes of coefficients of powers of the infinite Borwein product, Adv.\ Appl.\ Math.\ 141 (2022), 102405.
+\bibitem{Z} H.~Zuckerman, On the coefficients of certain modular forms belonging to subgroups of the modular group, Trans.\ AMS 45 (1939).
+\end{thebibliography}
+\end{document}
